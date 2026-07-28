@@ -1248,4 +1248,3 @@ export default function App() {
     </div>
   );
 }
-fix: remove variável não utilizada rotuloCampo
