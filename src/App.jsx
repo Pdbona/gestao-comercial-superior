@@ -9,10 +9,6 @@ function App() {
       <main className="app-main">
         <GestaoComercialSuperior />
       </main>
-
-      <footer className="app-footer">
-        <p>© 2024 SBS Solution — Consultoria Lean Manufacturing e Logística</p>
-      </footer>
     </div>
   );
 }
