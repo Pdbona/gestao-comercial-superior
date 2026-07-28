@@ -5,10 +5,6 @@ import './App.css';
 function App() {
   return (
     <div className="App">
-      <header className="app-header">
-        <h1>SBS Solution — Gestão Comercial</h1>
-        <p className="subtitle">Superior Transportes — Tabela Comercial Compartilhada</p>
-      </header>
 
       <main className="app-main">
         <GestaoComercialSuperior />
