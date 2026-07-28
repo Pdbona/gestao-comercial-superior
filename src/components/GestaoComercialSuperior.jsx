@@ -1018,9 +1018,7 @@ export default function App() {
     };
   }
 
-  const rotuloCampo = k => CAMPOS.find(f => f.key === k)?.label || k;
-
-  function diffCliente(antes, depois) {
+    function diffCliente(antes, depois) {
     const mudancas = [];
     const observar = [
       ['razaoSocial', 'Razão Social'], ['cnpj', 'CNPJ'], ['regime', 'Regime'], ['sala', 'Sala'],
@@ -1250,3 +1248,4 @@ export default function App() {
     </div>
   );
 }
+fix: remove variável não utilizada rotuloCampo
