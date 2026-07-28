@@ -1,5 +1,5 @@
 import React from 'react';
-import GestaoComercialSuperior from './components/Gestão_Comercial_Superior';
+import GestaoComercialSuperior from './components/GestaoComercialSuperior';
 import './App.css';
 
 function App() {
