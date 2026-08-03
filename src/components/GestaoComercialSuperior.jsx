@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { db } from '../firebase';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import {
-  Users, DollarSign, RefreshCw as RefreshCwIcon, TrendingUp, FileSpreadsheet,
+  Users, DollarSign, TrendingUp, FileSpreadsheet,
   Bell, ClipboardList, LogOut, Briefcase
 } from 'lucide-react';
 
