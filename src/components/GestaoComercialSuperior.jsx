@@ -1102,6 +1102,22 @@ function Logs({ logs }) {
   );
 }
 
+/* Rodapé padrão SBS — combinado com Pablo em 17/ago/2026: mesmo padrão do
+   APP_Gestao_Operacional. Cabeçalho fica só com a logo do cliente (Superior);
+   a logo da SBS (bordas arredondadas) + "Desenvolvido pela SBS Solution e
+   Byplo." vão só no rodapé. `direita` é o texto opcional do lado direito. */
+function RodapeSBS({ direita }) {
+  return (
+    <footer style={{ background: C.navy, color: '#fff', padding: '18px 26px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 10, fontFamily: "'Roboto', sans-serif", fontSize: 11.5, borderTop: `3px solid ${C.orange}` }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <img src={SBS_LOGO} alt="SBS Solution" style={{ height: 26, borderRadius: 8 }} />
+        <span>Desenvolvido pela SBS Solution e Byplo.</span>
+      </div>
+      {direita && <div style={{ color: '#C5CDD8', textAlign: 'right' }}>{direita}</div>}
+    </footer>
+  );
+}
+
 /* ---------- Login ---------- */
 function Login({ onLogin }) {
   const [passo, setPasso] = useState(null);
@@ -1119,16 +1135,13 @@ function Login({ onLogin }) {
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: C.bg }}>
-      {/* Cabeçalho */}
+      {/* Cabeçalho — só a logo do cliente (Superior); a da SBS fica no rodapé */}
       <header style={{ background: `linear-gradient(135deg, ${C.navy} 0%, ${C.navyMed} 100%)`, padding: '18px 26px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 14 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
-          <div style={{ borderRadius: 12, overflow: 'hidden', padding: '6px 8px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', background: '#fff' }}><img src={SBS_LOGO} alt="SBS Solution" style={{ height: 40 }} /></div>
-          <div style={{ color: '#fff' }}>
-            <div style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 800, fontSize: 14.5, display: 'flex', alignItems: 'center', gap: 7 }}>
-              <Briefcase size={16} /> GESTÃO COMERCIAL
-            </div>
-            <div style={{ fontFamily: "'Roboto', sans-serif", fontSize: 11, color: '#C5CDD8' }}>Superior Transportes · Lean Logística</div>
+        <div style={{ color: '#fff' }}>
+          <div style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 800, fontSize: 14.5, display: 'flex', alignItems: 'center', gap: 7 }}>
+            <Briefcase size={16} /> GESTÃO COMERCIAL
           </div>
+          <div style={{ fontFamily: "'Roboto', sans-serif", fontSize: 11, color: '#C5CDD8' }}>Superior Transportes · Lean Logística</div>
         </div>
         <div style={{ borderRadius: 12, overflow: 'hidden', padding: '6px 10px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', background: '#fff' }}><img src={SUPERIOR_LOGO} alt="Superior" style={{ height: 26, objectFit: 'contain' }} /></div>
       </header>
@@ -1186,10 +1199,7 @@ function Login({ onLogin }) {
         </div>
       </div>
 
-      <footer style={{ background: C.navy, color: '#fff', padding: '18px 26px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 10, fontFamily: "'Roboto', sans-serif", fontSize: 11.5, borderTop: `3px solid ${C.orange}` }}>
-        <div><strong style={{ display: 'block', fontWeight: 700, fontFamily: "'Montserrat', sans-serif" }}>SBS Solution</strong>Lean Manufacturing &amp; Logística</div>
-        <div style={{ color: '#C5CDD8', textAlign: 'right' }}>Gestão Comercial · Superior Transportes</div>
-      </footer>
+      <RodapeSBS direita="Superior Transportes" />
     </div>
   );
 }
@@ -1409,14 +1419,11 @@ export default function App() {
   return (
     <div style={{ minHeight: '100vh', background: C.bg, fontFamily: "'Roboto', sans-serif" }}>
       <header style={{ background: `linear-gradient(135deg, ${C.navy} 0%, ${C.navyMed} 100%)`, padding: '18px 26px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 14 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
-          <div style={{ borderRadius: 12, overflow: 'hidden', padding: '6px 8px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', background: '#fff' }}><img src={SBS_LOGO} alt="SBS Solution" style={{ height: 40 }} /></div>
-          <div style={{ color: '#fff' }}>
-            <div style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 800, fontSize: 14.5, display: 'flex', alignItems: 'center', gap: 7 }}>
-              <Briefcase size={16} /> GESTÃO COMERCIAL
-            </div>
-            <div style={{ fontFamily: "'Roboto', sans-serif", fontSize: 11, color: '#C5CDD8' }}>Superior Transportes · Lean Logística</div>
+        <div style={{ color: '#fff' }}>
+          <div style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 800, fontSize: 14.5, display: 'flex', alignItems: 'center', gap: 7 }}>
+            <Briefcase size={16} /> GESTÃO COMERCIAL
           </div>
+          <div style={{ fontFamily: "'Roboto', sans-serif", fontSize: 11, color: '#C5CDD8' }}>Superior Transportes · Lean Logística</div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <span style={{ background: role === 'comercial' ? C.orange : '#fff', color: role === 'comercial' ? '#fff' : C.navy, fontFamily: "'Montserrat', sans-serif", fontWeight: 700, fontSize: 10.5, padding: '6px 13px', borderRadius: 20, textTransform: 'uppercase' }}>
@@ -1513,10 +1520,7 @@ export default function App() {
         {aba === 'logs' && role === 'comercial' && <Logs logs={logs} />}
       </main>
 
-      <footer style={{ background: C.navy, color: '#fff', padding: '18px 26px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 10, fontFamily: "'Roboto', sans-serif", fontSize: 11.5, marginTop: 30, borderTop: `3px solid ${C.orange}` }}>
-        <div><strong style={{ display: 'block', fontWeight: 700, fontFamily: "'Montserrat', sans-serif" }}>SBS Solution</strong>Lean Manufacturing &amp; Logística</div>
-        <div style={{ color: '#C5CDD8', textAlign: 'right' }}>Gestão Comercial · Superior Transportes<br />Dados sincronizados em tempo real</div>
-      </footer>
+      <RodapeSBS direita={<>Gestão Comercial · Superior Transportes<br />Dados sincronizados em tempo real</>} />
 
       {editando && (
         <ClientForm initial={editando} grupos={grupos} padroes={padroes}
