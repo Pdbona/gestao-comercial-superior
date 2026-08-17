@@ -1129,6 +1129,15 @@ export default function App() {
      existia antes só para quem tinha a senha comercial — até existir
      cadastro de usuário de verdade aqui (ver comentário acima). */
   const [role] = useState('comercial');
+  /* Subitens escondidos, mandados pelo APP_Gestao_Operacional na própria URL
+     (?ocultar=id1,id2) — combinado com Pablo em 17/ago/2026, "forma rápida":
+     como o Comercial não tem login/cadastro de usuário próprio (nem enxerga
+     o Firestore de lá, é outro projeto), o Administrador decide lá quem vê
+     o quê e manda só o que falta esconder aqui. Sem o parâmetro, ninguém
+     fica escondido — igual sempre foi (link aberto = acesso total). Lido
+     uma vez só, no load. */
+  const [abasOcultas] = useState(() =>
+    (new URLSearchParams(window.location.search).get('ocultar') || '').split(',').map(s => s.trim()).filter(Boolean));
   const [clientes, setClientes] = useState([]);
   const [padroes, setPadroes] = useState(PADROES_INICIAIS);
   const [destinatarios, setDestinatarios] = useState([]);
@@ -1334,10 +1343,15 @@ export default function App() {
     { id: 'notif', label: 'Notificações', sub: 'Fila de eventos', icon: Bell },
     { id: 'logs', label: 'Logs', sub: 'Auditoria completa', icon: ClipboardList },
   ];
-  /* Sem login, acesso total sempre — as mesmas telas que "role === comercial"
+  /* Sem login, acesso total por padrão — as mesmas telas que "role === comercial"
      já liberava antes. Escopo por pessoa fica pro Administrador do
-     APP_Gestao_Operacional decidir (ver comentário no topo do arquivo). */
-  const abas = TODAS_ABAS;
+     APP_Gestao_Operacional decidir (ver comentário no topo do arquivo);
+     abasOcultas é o que ele mandou esconder pra quem abriu este link. */
+  const abas = TODAS_ABAS.filter(t => !abasOcultas.includes(t.id));
+  /* Se a aba selecionada foi escondida (ou o `aba` inicial 'clientes' não
+     está liberado pra quem abriu este link), cai pra primeira aba visível —
+     sem isso a pessoa veria a tela em branco, sem nenhuma aba destacada. */
+  const abaAtual = abas.some(t => t.id === aba) ? aba : (abas[0]?.id || null);
 
   return (
     <div style={{ minHeight: '100vh', background: C.bg, fontFamily: "'Roboto', sans-serif" }}>
@@ -1354,7 +1368,7 @@ export default function App() {
 
       <nav style={{ background: '#fff', borderBottom: `1px solid ${C.silverLight}`, padding: '0 26px', display: 'flex', gap: 4, overflowX: 'auto' }}>
         {abas.map(t => {
-          const Ic = t.icon, ativo = aba === t.id;
+          const Ic = t.icon, ativo = abaAtual === t.id;
           return (
             <button key={t.id} onClick={() => setAba(t.id)} style={{
               display: 'flex', alignItems: 'center', gap: 8, padding: '13px 13px', border: 'none', background: 'transparent',
@@ -1374,7 +1388,7 @@ export default function App() {
 
       {erroSave && <div style={{ background: '#FDECEA', color: C.red, padding: '10px 26px', fontSize: 13 }}>{erroSave}</div>}
 
-      {alertas.length > 0 && aba === 'clientes' && (
+      {alertas.length > 0 && abaAtual === 'clientes' && (
         <div style={{ background: '#FFF8E1', borderBottom: `1px solid ${C.yellow}55`, padding: '10px 26px', fontSize: 12.5, color: '#7A5600' }}>
           <strong style={{ fontFamily: "'Montserrat', sans-serif" }}>Contratos a vencer:</strong>{' '}
           {alertas.map(x => `${x.c.razaoSocial} (${x.a.texto})`).join(' · ')}
@@ -1382,7 +1396,12 @@ export default function App() {
       )}
 
       <main style={{ padding: 24, maxWidth: 1400, margin: '0 auto' }}>
-        {aba === 'clientes' && (
+        {abas.length === 0 && (
+          <div style={{ textAlign: 'center', color: C.silver, fontSize: 13, padding: '60px 0' }}>
+            Nenhum acesso liberado para este link. Peça pro Administrador conferir em Perfis.
+          </div>
+        )}
+        {abaAtual === 'clientes' && (
           <>
             <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', marginBottom: 16 }}>
               <input placeholder="Buscar cliente ou CNPJ" value={busca} onChange={e => setBusca(e.target.value)}
@@ -1426,15 +1445,15 @@ export default function App() {
           </>
         )}
 
-        {aba === 'tabela' && <TabelaComercial clientes={clientes} role={role} onInline={inlineEdit} itensCustom={padroes.itensCustom} />}
-        {aba === 'reajuste' && role === 'comercial' && <Reajuste clientes={clientes} historico={reajustes} onAplicar={aplicarReajuste} />}
-        {aba === 'padroes' && role === 'comercial' && <Padroes padroes={padroes} onSave={p => salvarDados({ padroes: p })} />}
-        {aba === 'notif' && role === 'comercial' && (
+        {abaAtual === 'tabela' && <TabelaComercial clientes={clientes} role={role} onInline={inlineEdit} itensCustom={padroes.itensCustom} />}
+        {abaAtual === 'reajuste' && role === 'comercial' && <Reajuste clientes={clientes} historico={reajustes} onAplicar={aplicarReajuste} />}
+        {abaAtual === 'padroes' && role === 'comercial' && <Padroes padroes={padroes} onSave={p => salvarDados({ padroes: p })} />}
+        {abaAtual === 'notif' && role === 'comercial' && (
           <Notificacoes destinatarios={destinatarios} outbox={outbox}
             onSaveDest={d => salvarDados({ destinatarios: [...destinatarios, d] })}
             onRemoveDest={id => salvarDados({ destinatarios: destinatarios.filter(x => x.id !== id) })} />
         )}
-        {aba === 'logs' && role === 'comercial' && <Logs logs={logs} />}
+        {abaAtual === 'logs' && role === 'comercial' && <Logs logs={logs} />}
       </main>
 
       <RodapeSBS direita={<>Gestão Comercial · Superior Transportes<br />Dados sincronizados em tempo real</>} />
