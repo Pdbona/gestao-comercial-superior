@@ -1108,7 +1108,7 @@ function Logs({ logs }) {
    Byplo." vão só no rodapé. `direita` é o texto opcional do lado direito. */
 function RodapeSBS({ direita }) {
   return (
-    <footer style={{ background: C.navy, color: '#fff', padding: '18px 26px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 10, fontFamily: "'Roboto', sans-serif", fontSize: 11.5, borderTop: `3px solid ${C.orange}` }}>
+    <footer style={{ background: C.navy, color: '#fff', padding: '18px 26px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 10, fontFamily: "'Roboto', sans-serif", fontSize: 11.5, marginTop: 30, borderTop: `3px solid ${C.orange}` }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
         <img src={SBS_LOGO} alt="SBS Solution" style={{ height: 26, borderRadius: 8 }} />
         <span>Desenvolvido pela SBS Solution e Byplo.</span>
@@ -1135,11 +1135,14 @@ function Login({ onLogin }) {
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: C.bg }}>
-      {/* Cabeçalho — só a logo do cliente (Superior); a da SBS fica no rodapé */}
+      {/* Cabeçalho — só a logo do cliente (Superior); a da SBS fica no rodapé.
+         Sem ícone e fontSize 14 — igual à Porta de Entrada do Operacional
+         (tela "pré-login"; ícone/14.5 fica só na tela principal pós-login,
+         que corresponde ao Painel do Gestor de lá). */}
       <header style={{ background: `linear-gradient(135deg, ${C.navy} 0%, ${C.navyMed} 100%)`, padding: '18px 26px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 14 }}>
         <div style={{ color: '#fff' }}>
-          <div style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 800, fontSize: 14.5, display: 'flex', alignItems: 'center', gap: 7 }}>
-            <Briefcase size={16} /> GESTÃO COMERCIAL
+          <div style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 800, fontSize: 14 }}>
+            GESTÃO COMERCIAL
           </div>
           <div style={{ fontFamily: "'Roboto', sans-serif", fontSize: 11, color: '#C5CDD8' }}>Superior Transportes · Lean Logística</div>
         </div>
